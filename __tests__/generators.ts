@@ -1,15 +1,11 @@
 import * as fc from 'fast-check';
 import { Player } from '../types/player';
 import {
-  Fifteen,
   Forty,
   FortyData,
-  Love,
-  Point,
-  Points,
-  Thirty,
 } from '../types/score';
 
+import { Fifteen, Love, Point, Points, Thirty } from '../types/point';
 export const playerOneArb = (): fc.Arbitrary<Player> =>
   fc.constant('PLAYER_ONE');
 export const playerTwoArb = (): fc.Arbitrary<Player> =>
@@ -21,8 +17,8 @@ export const getPoints = (): fc.Arbitrary<Points> =>
   fc.record({
     kind: fc.constant('POINTS'),
     pointsData: fc.record({
-      PLAYER_ONE: getPoint(),
-      PLAYER_TWO: getPoint(),
+      playerOne: getPoint(),
+      playerTwo: getPoint(),
     }),
   });
 export const getFortyData = (): fc.Arbitrary<FortyData> =>
