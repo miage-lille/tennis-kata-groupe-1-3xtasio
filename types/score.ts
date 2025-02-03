@@ -1,5 +1,5 @@
 import { isSamePlayer, Player } from './player';
-import { Point, Points } from './point';
+import { Point, points, Points, PointsData } from './point';
 import { none, Option, some, match as matchOpt } from 'fp-ts/Option';
 import { pipe } from 'fp-ts/lib/function';
 
@@ -48,6 +48,8 @@ export const pointToString = (point: Point): string => {
   }
 }
 
+
+
 export const playerToString = (player: Player) => {
   switch (player) {
     case 'PLAYER_ONE':
@@ -68,7 +70,7 @@ export const otherPlayer = (player: Player) => {
 export const scoreToString = (score: Score): string => {
   switch (score.kind) {
     case 'POINTS':
-      return `${pointToString(score.pointsData.playerOne)} - ${pointToString(score.pointsData.playerTwo)}`;
+      return `${pointToString(score.pointsData.PLAYER_ONE)} - ${pointToString(score.pointsData.PLAYER_TWO)}`;
     case 'DEUCE':
       return 'Deuce';
     case 'FORTY':
@@ -145,6 +147,23 @@ export const incrementPoint = (point: Point): Option<Point> => {
 
 export const scoreWhenGame = (winner: Player): Score => game(winner);
 
+
+export const scoreWhenPoint = (current: PointsData, winner: Player): Score => {
+  return pipe(
+    incrementPoint(current[winner]),
+    matchOpt(
+      () => forty(winner, current[otherPlayer(winner)]),
+      (newPoint) => ({
+        kind: 'POINTS',
+        pointsData: {
+          ...current,
+          [winner]: newPoint,
+        },
+      } as Score)
+    )
+  );
+
+};
 const score = (currentScore: Score, winner: Player): Score => {
   switch (currentScore.kind) {
     case 'POINTS':

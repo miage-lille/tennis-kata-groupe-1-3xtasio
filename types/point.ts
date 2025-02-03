@@ -14,8 +14,8 @@ export type Thirty = {
 
 
 export type PointsData = {
-    playerOne: Point;
-    playerTwo: Point;
+    PLAYER_ONE: Point;
+    PLAYER_TWO: Point;
 };
 
 export type Points = {
@@ -30,7 +30,7 @@ export const points = (
 ): Points => ({
     kind: 'POINTS',
     pointsData: {
-        playerOne: playerOnePoints,
-        playerTwo: playerTwoPoints,
+        PLAYER_ONE: playerOnePoints,
+        PLAYER_TWO: playerTwoPoints,
     },
 });

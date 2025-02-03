@@ -2,8 +2,9 @@ import { describe, expect, test } from '@jest/globals';
 import * as fc from 'fast-check';
 import { otherPlayer, playerToString } from '..'
 import * as G from './generators';
-import { scoreWhenDeuce, advantage, scoreWhenAdvantage, game, deuce, scoreWhenForty, forty, thirty } from '../types/score';
+import { scoreWhenDeuce, advantage, scoreWhenAdvantage, game, deuce, scoreWhenForty, forty, thirty, scoreWhenPoint } from '../types/score';
 import { isSamePlayer } from '../types/player';
+import { PointsData } from '../types/point';
 
 describe('Tests for tooling functions', () => {
   test('Given playerOne when playerToString', () => {
@@ -86,18 +87,18 @@ describe('Tests for transition functions', () => {
   test('Given players at 0 or 15 points score kind is still POINTS', () => {
     fc.assert(
       fc.property(G.getPoints(), G.getPlayer(), ({ pointsData }, winner) => {
-        throw new Error(
-          'Your turn to code the preconditions, expected result and test.'
-        );
+        fc.pre(pointsData[winner].kind == 'LOVE' || pointsData[winner].kind == 'FIFTEEN');
+        const score = scoreWhenPoint(pointsData, winner);
+        expect(score.kind).toBe('POINTS');
       })
     );
   });
   test('Given one player at 30 and win, score kind is forty', () => {
     fc.assert(
       fc.property(G.getPoints(), G.getPlayer(), ({ pointsData }, winner) => {
-        throw new Error(
-          'Your turn to code the preconditions, expected result and test.'
-        );
+        fc.pre(pointsData[winner].kind === 'THIRTY');
+        const score = scoreWhenPoint(pointsData, winner);
+        expect(score.kind).toBe('FORTY');
       })
     );
   });
