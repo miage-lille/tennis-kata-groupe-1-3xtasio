@@ -1,15 +1,11 @@
 import * as fc from 'fast-check';
 import { Player } from '../types/player';
 import {
-  Fifteen,
   Forty,
   FortyData,
-  Love,
-  Point,
-  Points,
-  Thirty,
 } from '../types/score';
 
+import { Fifteen, Love, Point, Points, Thirty } from '../types/point';
 export const playerOneArb = (): fc.Arbitrary<Player> =>
   fc.constant('PLAYER_ONE');
 export const playerTwoArb = (): fc.Arbitrary<Player> =>
